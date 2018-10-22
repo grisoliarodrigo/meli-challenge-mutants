@@ -45,13 +45,13 @@ public class MutantDetector {
 	}
 	
 
-	public boolean checkHorizontalSequence(Position pos, String[] dna) {
+	public boolean checkHorizontalSequence(Position initialPos, String[] dna) {
 		
-		if(!shouldChecklHorizontal(pos)) return false;
+		if(!shouldCheckHorizontal(initialPos)) return false;
 		
-		String row = dna[pos.getY()];
+		String row = dna[initialPos.getY()];
 
-		for (int i = pos.getX(); i < LETTERS_FOR_SEQUENCE - 1 + pos.getX(); i++) {
+		for (int i = initialPos.getX(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getX(); i++) {
 			char currentChar = row.charAt(i);
 			char nextChar = row.charAt(i + 1);
 
@@ -63,13 +63,13 @@ public class MutantDetector {
 		return true;
 	}
 
-	public boolean checkVerticalSequence(Position pos, String[] dna) {
+	public boolean checkVerticalSequence(Position initialPos, String[] dna) {
 		
-		if(!shouldChecklVertical(pos)) return false;
+		if(!shouldCheckVertical(initialPos)) return false;
 
-		for (int i = pos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + pos.getY(); i++) {
-			char currentChar = dna[i].charAt(pos.getX());
-			char nextChar = dna[i + 1].charAt(pos.getX());
+		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+			char currentChar = dna[i].charAt(initialPos.getX());
+			char nextChar = dna[i + 1].charAt(initialPos.getX());
 
 			if (!(currentChar == nextChar)) {
 				return false;
@@ -79,13 +79,16 @@ public class MutantDetector {
 		return true;
 	}
 
-	public boolean checkDiagonalFowardSequence(Position pos, String[] dna) {
+	public boolean checkDiagonalFowardSequence(Position initialPos, String[] dna) {
 		
-		if(!shouldChecklDiagonalFoward(pos)) return false;
+		if(!shouldCheckDiagonalFoward(initialPos)) return false;
 
-		for (int i = pos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + pos.getY(); i++) {
-			char currentChar = dna[i].charAt(pos.getX() + i);
-			char nextChar = dna[i + 1].charAt(pos.getX() + i + 1);
+		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+			
+			int x = initialPos.getX() + (i - initialPos.getY());
+			
+			char currentChar = dna[i].charAt(x);
+			char nextChar = dna[i + 1].charAt(x + 1);
 
 			if (!(currentChar == nextChar)) {
 				return false;
@@ -95,13 +98,16 @@ public class MutantDetector {
 		return true;
 	}
 
-	public boolean checkDiagonalBackwardSequence(Position pos, String[] dna) {
+	public boolean checkDiagonalBackwardSequence(Position initialPos, String[] dna) {
 		
-		if(!shouldChecklDiagonalBackward(pos)) return false;
+		if(!shouldCheckDiagonalBackward(initialPos)) return false;
 
-		for (int i = pos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + pos.getY(); i++) {
-			char currentChar = dna[i].charAt(pos.getX() - i);
-			char nextChar = dna[i + 1].charAt(pos.getX() - i - 1);
+		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+			
+			int x = initialPos.getX() - (i - initialPos.getY());
+			
+			char currentChar = dna[i].charAt(x);
+			char nextChar = dna[i + 1].charAt(x-1);
 
 			if (!(currentChar == nextChar)) {
 				return false;
@@ -111,20 +117,20 @@ public class MutantDetector {
 		return true;
 	}
 	
-	public boolean shouldChecklHorizontal(Position pos) {
+	public boolean shouldCheckHorizontal(Position pos) {
 		return pos.getX() + LETTERS_FOR_SEQUENCE <= MATRIX_SIZE;
 	}
 	
-	public boolean shouldChecklVertical(Position pos) {
+	public boolean shouldCheckVertical(Position pos) {
 		return pos.getY() + LETTERS_FOR_SEQUENCE <= MATRIX_SIZE;
 	}
 	
-	public boolean shouldChecklDiagonalFoward(Position pos) {
-		return shouldChecklHorizontal(pos) && shouldChecklVertical(pos);
+	public boolean shouldCheckDiagonalFoward(Position pos) {
+		return shouldCheckHorizontal(pos) && shouldCheckVertical(pos);
 	}
 	
-	public boolean shouldChecklDiagonalBackward(Position pos) {
-		return shouldChecklVertical(pos) && 
+	public boolean shouldCheckDiagonalBackward(Position pos) {
+		return shouldCheckVertical(pos) && 
 				pos.getX() + 1 - LETTERS_FOR_SEQUENCE >= 0;
 	}
 
