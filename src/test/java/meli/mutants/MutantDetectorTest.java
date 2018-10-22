@@ -4,6 +4,7 @@ import org.junit.Test;
 import junit.framework.Assert;
 import meli.mutants.detector.MutantDetector;
 import meli.mutants.detector.Position;
+import meli.mutants.detector.exceptions.InvalidCharacterException;
 
 public class MutantDetectorTest {
 
@@ -14,13 +15,13 @@ public class MutantDetectorTest {
 	}
 	
 	@Test
-	public void testHorizontalSequenceAtMiddleOfRow() {
+	public void testHorizontalSequenceAtInnerColumn() {
 		String[] dna = {"QAAAAQW", "QWERTY", "ASDFGH", "ASDFGH", "ASDFGH", "ASDFGH"};
 		Assert.assertTrue(new MutantDetector().checkHorizontalSequence(new Position(1,0), dna));
 	}
 	
 	@Test
-	public void testHorizontalSequenceAtMiddleOfColumn() {
+	public void testHorizontalSequenceAtInnerRow() {
 		String[] dna = {"QAABAQ", "QAAAAQ", "ASDFGH", "ASDFGH", "ASDFGH", "ASDFGH"};
 		Assert.assertTrue(new MutantDetector().checkHorizontalSequence(new Position(1,1), dna));
 	}
@@ -38,13 +39,13 @@ public class MutantDetectorTest {
 	}
 	
 	@Test
-	public void testVerticalSequenceAtMiddleColumn() {
+	public void testVerticalSequenceAtInnerColumn() {
 		String[] dna = {"EBAAQW", "BWERTY", "BWERTY", "BWERTY", "BWERTY", "AWERTY"};
 		Assert.assertTrue(new MutantDetector().checkVerticalSequence(new Position(0,1), dna));
 	}
 	
 	@Test
-	public void testVerticalSequenceAtMiddleRow() {
+	public void testVerticalSequenceAtInnerRow() {
 		String[] dna = {"EWAAQW", "BWERTY", "BWERTY", "BWERTY", "BFERTY", "AFERTY"};
 		Assert.assertTrue(new MutantDetector().checkVerticalSequence(new Position(1,0), dna));
 	}
@@ -129,6 +130,18 @@ public class MutantDetectorTest {
 	public void testIsNotMutantWithOneDiagonal() {
 		String[] dna = {"ATGGGA","CATTGC","TTATTT","TGAAGG","GCGTCA","TCACTG"};
 		Assert.assertFalse(new MutantDetector().isMutant(dna));
+	}
+	
+	@Test
+	public void testIsMutantWithTwoDiagonalsInside() {
+		String[] dna = {"GTGTGA","CATTGC","TTATTT","TGAAGG","GCGTAA","TCACTG"};
+		Assert.assertTrue(new MutantDetector().isMutant(dna));
+	}
+	
+	@Test (expected = InvalidCharacterException.class)
+	public void testInvalidCharacterFails() {
+		String[] dna = {"PAAAAA","PAAAAA","PAAAAA","PAAAAA","PAAAAA","PAAAAA"};
+		new MutantDetector().isMutant(dna);
 	}
 	
 }

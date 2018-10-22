@@ -1,12 +1,18 @@
 package meli.mutants.detector;
 
+import java.util.Arrays;
+import java.util.List;
+
+import meli.mutants.detector.exceptions.InvalidCharacterException;
+
 public class MutantDetector {
 
 	static int LETTERS_FOR_SEQUENCE = 4;
 	static int SEQUENCES_FOR_POSITIVE = 2;
 	static int MATRIX_SIZE = 6;
-	
+	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A','T','C','G');
 
+	
 	public boolean isMutant(String[] dna) {
 
 		int foundSequences = 0;
@@ -15,6 +21,7 @@ public class MutantDetector {
 			
 			for (int j = 0; j < MATRIX_SIZE; j++) {
 				
+				validateChar(dna[i].charAt(j));				
 				Position pos = new Position(j, i);
 				
 				if(checkHorizontalSequence(pos, dna)) {
@@ -85,10 +92,10 @@ public class MutantDetector {
 
 		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
 			
-			int x = initialPos.getX() + (i - initialPos.getY());
+			int currentX = initialPos.getX() + (i - initialPos.getY());
 			
-			char currentChar = dna[i].charAt(x);
-			char nextChar = dna[i + 1].charAt(x + 1);
+			char currentChar = dna[i].charAt(currentX);
+			char nextChar = dna[i + 1].charAt(currentX + 1);
 
 			if (!(currentChar == nextChar)) {
 				return false;
@@ -104,10 +111,10 @@ public class MutantDetector {
 
 		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
 			
-			int x = initialPos.getX() - (i - initialPos.getY());
+			int currentX = initialPos.getX() - (i - initialPos.getY());
 			
-			char currentChar = dna[i].charAt(x);
-			char nextChar = dna[i + 1].charAt(x-1);
+			char currentChar = dna[i].charAt(currentX);
+			char nextChar = dna[i + 1].charAt(currentX-1);
 
 			if (!(currentChar == nextChar)) {
 				return false;
@@ -132,6 +139,12 @@ public class MutantDetector {
 	public boolean shouldCheckDiagonalBackward(Position pos) {
 		return shouldCheckVertical(pos) && 
 				pos.getX() + 1 - LETTERS_FOR_SEQUENCE >= 0;
+	}
+	
+	private void validateChar(char c) {
+		if(!POSSIBLE_LETTERS.contains(c)) {
+			throw new InvalidCharacterException("Invalid Character");
+		}
 	}
 
 }
