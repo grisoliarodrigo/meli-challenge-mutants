@@ -63,46 +63,72 @@ public class MutantDetectorTest {
 	
 	@Test
 	public void testShouldCheckHorizontal() {
-		Assert.assertTrue(new MutantDetector().shouldChecklHorizontal(new Position(2,0)));
+		Assert.assertTrue(new MutantDetector().shouldCheckHorizontal(new Position(2,0)));
 	}
 	
 	@Test
 	public void testShouldNotCheckHorizontal() {
-		Assert.assertFalse(new MutantDetector().shouldChecklHorizontal(new Position(3,0)));
+		Assert.assertFalse(new MutantDetector().shouldCheckHorizontal(new Position(3,0)));
 	}
 	
 	@Test
 	public void testShouldCheckVertical() {
-		Assert.assertTrue(new MutantDetector().shouldChecklVertical(new Position(0,2)));
+		Assert.assertTrue(new MutantDetector().shouldCheckVertical(new Position(0,2)));
 	}
 	
 	@Test
 	public void testShouldNotCheckVertical() {
-		Assert.assertFalse(new MutantDetector().shouldChecklVertical(new Position(0,3)));
+		Assert.assertFalse(new MutantDetector().shouldCheckVertical(new Position(0,3)));
 	}
 	
 	@Test
 	public void testShouldCheckDiagonalFoward() {
-		Assert.assertTrue(new MutantDetector().shouldChecklDiagonalFoward(new Position(2,2)));
+		Assert.assertTrue(new MutantDetector().shouldCheckDiagonalFoward(new Position(2,2)));
 	}
 	
 	@Test
 	public void testShouldNotCheckDiagonalFoward() {
-		Assert.assertFalse(new MutantDetector().shouldChecklDiagonalFoward(new Position(2,3)));
+		Assert.assertFalse(new MutantDetector().shouldCheckDiagonalFoward(new Position(2,3)));
 	}
 	
 	@Test
 	public void testShouldCheckDiagonalBackward() {
-		Assert.assertTrue(new MutantDetector().shouldChecklDiagonalBackward(new Position(3,2)));
+		Assert.assertTrue(new MutantDetector().shouldCheckDiagonalBackward(new Position(3,2)));
 	}
 	
 	@Test
 	public void testShouldNotCheckDiagonalBackward() {
-		Assert.assertFalse(new MutantDetector().shouldChecklDiagonalBackward(new Position(2,2)));
+		Assert.assertFalse(new MutantDetector().shouldCheckDiagonalBackward(new Position(2,2)));
 	}
 	
-
+	@Test
+	public void testIsMutant() {
+		String[] dna = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
+		Assert.assertTrue(new MutantDetector().isMutant(dna));
+	}
 	
+	@Test
+	public void testIsNotMutant() {
+		String[] dna = {"ATGCGA","CAGTGC","TTATTT","AGAAGG","CACCTA","TCACTG"};
+		Assert.assertFalse(new MutantDetector().isMutant(dna));
+	}
 	
-
+	@Test
+	public void testIsMutantWithTwoSequences() {
+		String[] dna = {"AAAAGA","CCGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
+		Assert.assertTrue(new MutantDetector().isMutant(dna));
+	}
+	
+	@Test
+	public void testIsMutantWithTwoDiagonals() {
+		String[] dna = {"ATGTGA","CATTGC","TTATTT","TGAAGG","GCGTCA","TCACTG"};
+		Assert.assertTrue(new MutantDetector().isMutant(dna));
+	}
+	
+	@Test
+	public void testIsNotMutantWithOneDiagonal() {
+		String[] dna = {"ATGGGA","CATTGC","TTATTT","TGAAGG","GCGTCA","TCACTG"};
+		Assert.assertFalse(new MutantDetector().isMutant(dna));
+	}
+	
 }
