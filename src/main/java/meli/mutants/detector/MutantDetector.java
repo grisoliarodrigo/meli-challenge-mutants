@@ -7,7 +7,7 @@ import meli.mutants.detector.exceptions.InvalidCharacterException;
 
 public class MutantDetector {
 
-	static int LETTERS_FOR_SEQUENCE = 4;
+	static int SEQUENCE_LENGTH = 4;
 	static int SEQUENCES_FOR_POSITIVE = 2;
 	static int MATRIX_SIZE = 6;
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A','T','C','G');
@@ -58,7 +58,7 @@ public class MutantDetector {
 		
 		String row = dna[initialPos.getY()];
 
-		for (int i = initialPos.getX(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getX(); i++) {
+		for (int i = initialPos.getX(); i < SEQUENCE_LENGTH - 1 + initialPos.getX(); i++) {
 			char currentChar = row.charAt(i);
 			char nextChar = row.charAt(i + 1);
 
@@ -74,7 +74,7 @@ public class MutantDetector {
 		
 		if(!shouldCheckVertical(initialPos)) return false;
 
-		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
 			char currentChar = dna[i].charAt(initialPos.getX());
 			char nextChar = dna[i + 1].charAt(initialPos.getX());
 
@@ -90,7 +90,7 @@ public class MutantDetector {
 		
 		if(!shouldCheckDiagonalFoward(initialPos)) return false;
 
-		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
 			
 			int currentX = initialPos.getX() + (i - initialPos.getY());
 			
@@ -109,7 +109,7 @@ public class MutantDetector {
 		
 		if(!shouldCheckDiagonalBackward(initialPos)) return false;
 
-		for (int i = initialPos.getY(); i < LETTERS_FOR_SEQUENCE - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
 			
 			int currentX = initialPos.getX() - (i - initialPos.getY());
 			
@@ -125,11 +125,11 @@ public class MutantDetector {
 	}
 	
 	public boolean shouldCheckHorizontal(Position pos) {
-		return pos.getX() + LETTERS_FOR_SEQUENCE <= MATRIX_SIZE;
+		return pos.getX() + SEQUENCE_LENGTH <= MATRIX_SIZE;
 	}
 	
 	public boolean shouldCheckVertical(Position pos) {
-		return pos.getY() + LETTERS_FOR_SEQUENCE <= MATRIX_SIZE;
+		return pos.getY() + SEQUENCE_LENGTH <= MATRIX_SIZE;
 	}
 	
 	public boolean shouldCheckDiagonalFoward(Position pos) {
@@ -138,7 +138,7 @@ public class MutantDetector {
 	
 	public boolean shouldCheckDiagonalBackward(Position pos) {
 		return shouldCheckVertical(pos) && 
-				pos.getX() + 1 - LETTERS_FOR_SEQUENCE >= 0;
+				pos.getX() + 1 - SEQUENCE_LENGTH >= 0;
 	}
 	
 	private void validateChar(char c) {
