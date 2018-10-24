@@ -3,13 +3,13 @@ package meli.mutants.detector;
 import java.util.Arrays;
 import java.util.List;
 
-import meli.mutants.detector.exceptions.InvalidCharacterException;
+import meli.mutants.detector.exceptions.InvalidDNAException;
 
 public class MutantDetector {
 
 	static int SEQUENCE_LENGTH = 4;
 	static int SEQUENCES_FOR_POSITIVE = 2;
-	static int MATRIX_SIZE = 6;
+	static int DNA_SIZE = 6;
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A','T','C','G');
 
 	
@@ -17,9 +17,9 @@ public class MutantDetector {
 
 		int foundSequences = 0;
 
-		for (int i = 0; i < MATRIX_SIZE; i++) {
+		for (int i = 0; i < DNA_SIZE; i++) {
 			
-			for (int j = 0; j < MATRIX_SIZE; j++) {
+			for (int j = 0; j < DNA_SIZE; j++) {
 				
 				validateChar(dna[i].charAt(j));				
 				Position pos = new Position(j, i);
@@ -125,11 +125,11 @@ public class MutantDetector {
 	}
 	
 	public boolean shouldCheckHorizontal(Position pos) {
-		return pos.getX() + SEQUENCE_LENGTH <= MATRIX_SIZE;
+		return pos.getX() + SEQUENCE_LENGTH <= DNA_SIZE;
 	}
 	
 	public boolean shouldCheckVertical(Position pos) {
-		return pos.getY() + SEQUENCE_LENGTH <= MATRIX_SIZE;
+		return pos.getY() + SEQUENCE_LENGTH <= DNA_SIZE;
 	}
 	
 	public boolean shouldCheckDiagonalFoward(Position pos) {
@@ -143,7 +143,7 @@ public class MutantDetector {
 	
 	private void validateChar(char c) {
 		if(!POSSIBLE_LETTERS.contains(c)) {
-			throw new InvalidCharacterException("Invalid Character");
+			throw new InvalidDNAException("Invalid Character");
 		}
 	}
 

@@ -4,7 +4,7 @@ import org.junit.Test;
 import junit.framework.Assert;
 import meli.mutants.detector.MutantDetector;
 import meli.mutants.detector.Position;
-import meli.mutants.detector.exceptions.InvalidCharacterException;
+import meli.mutants.detector.exceptions.InvalidDNAException;
 
 public class MutantDetectorTest {
 
@@ -138,7 +138,7 @@ public class MutantDetectorTest {
 		Assert.assertTrue(new MutantDetector().isMutant(dna));
 	}
 	
-	@Test (expected = InvalidCharacterException.class)
+	@Test (expected = InvalidDNAException.class)
 	public void testInvalidCharacterFails() {
 		String[] dna = {"PAAAAA","PAAAAA","PAAAAA","PAAAAA","PAAAAA","PAAAAA"};
 		new MutantDetector().isMutant(dna);
