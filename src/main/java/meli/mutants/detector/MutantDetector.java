@@ -16,7 +16,7 @@ public class MutantDetector {
 	public boolean isMutant(String[] dna) {
 
 		int foundSequences = 0;
-
+		
 		for (int i = 0; i < DNA_SIZE; i++) {
 			
 			for (int j = 0; j < DNA_SIZE; j++) {
@@ -137,8 +137,7 @@ public class MutantDetector {
 	}
 	
 	public boolean shouldCheckDiagonalBackward(Position pos) {
-		return shouldCheckVertical(pos) && 
-				pos.getX() + 1 - SEQUENCE_LENGTH >= 0;
+		return shouldCheckVertical(pos) && pos.getX() + 1 - SEQUENCE_LENGTH >= 0;
 	}
 	
 	private void validateChar(char c) {
