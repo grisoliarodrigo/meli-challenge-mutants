@@ -12,134 +12,114 @@ public class MutantDetector {
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A', 'T', 'C', 'G');
 
 	private String[] dna;
-	private int foundSequences = 0;
+	private int foundSequences;
 
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
 	}
 
 	public boolean isMutant() {
-		try {
-			return doIsMutant();
-		} catch (ArrayIndexOutOfBoundsException e) {
-			throw new InvalidDNAException("Invalid table size.");
-		} catch (StringIndexOutOfBoundsException e) {
-			throw new InvalidDNAException("Invalid row size.");
-		}
-	}
 
-	public boolean doIsMutant() {
+		foundSequences = 0;
+		
+		validateTableSize();
 
 		for (int i = 0; i < dna.length; i++) {
+			
+			validateRowSize(i);
 
 			for (int j = 0; j < dna.length; j++) {
 
 				Position pos = new Position(j, i);
-
-				if (checkHorizontalSequence(pos) && foundSequences >= SEQUENCES_FOR_POSITIVE) {
-					return true;
-				}
-
-				if (checkVerticalSequence(pos) && foundSequences >= SEQUENCES_FOR_POSITIVE) {
-					return true;
-				}
-
-				if (checkDiagonalFowardSequence(pos) && foundSequences >= SEQUENCES_FOR_POSITIVE) {
-					return true;
-				}
-
-				if (checkDiagonalBackwardSequence(pos) && foundSequences >= SEQUENCES_FOR_POSITIVE) {
-					return true;
-				}
+				validateCharAt(pos);
+				
+				checkHorizontalSequence(pos);
+				checkVerticalSequence(pos);
+				checkDiagonalFowardSequence(pos);
+				checkDiagonalBackwardSequence(pos);
 
 			}
 
 		}
 
-		return false;
+		return foundSequences >= SEQUENCES_FOR_POSITIVE;
 	}
 
-	private boolean checkHorizontalSequence(Position initialPos) {
+	private void checkHorizontalSequence(Position initialPos) {
 
 		if (!shouldCheckHorizontal(initialPos)) {
-			return false;
+			return;
 		}
 
 		for (int i = initialPos.getX(); i < SEQUENCE_LENGTH - 1 + initialPos.getX(); i++) {
-			char currentChar = dna[initialPos.getY()].charAt(i);
-			char nextChar = dna[initialPos.getY()].charAt(i + 1);
+			char currentChar = getChar(i, initialPos.getY());
+			char nextChar = getChar(i + 1, initialPos.getY());
 
-			if (!(POSSIBLE_LETTERS.contains(currentChar) && currentChar == nextChar)) {
-				return false;
+			if (currentChar != nextChar) {
+				return;
 			}
 		}
 
 		foundSequences++;
-		return true;
 	}
 
-	private boolean checkVerticalSequence(Position initialPos) {
+	private void checkVerticalSequence(Position initialPos) {
 
 		if (!shouldCheckVertical(initialPos)) {
-			return false;
+			return;
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
+			char currentChar = getChar(initialPos.getX(), i);
+			char nextChar = getChar(initialPos.getX(), i + 1);
 
-			char currentChar = dna[i].charAt(initialPos.getX());
-			char nextChar = dna[i + 1].charAt(initialPos.getX());
-
-			if (!(POSSIBLE_LETTERS.contains(currentChar) && currentChar == nextChar)) {
-				return false;
+			if (currentChar != nextChar) {
+				return;
 			}
 		}
 
 		foundSequences++;
-		return true;
 	}
 
-	private boolean checkDiagonalFowardSequence(Position initialPos) {
+	private void checkDiagonalFowardSequence(Position initialPos) {
 
 		if (!shouldCheckDiagonalFoward(initialPos)) {
-			return false;
+			return;
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
 
 			int currentX = initialPos.getX() + (i - initialPos.getY());
+			char currentChar = getChar(currentX, i);
+			char nextChar = getChar(currentX + 1, i + 1);
 
-			char currentChar = dna[i].charAt(currentX);
-			char nextChar = dna[i + 1].charAt(currentX + 1);
-
-			if (!(POSSIBLE_LETTERS.contains(currentChar) && currentChar == nextChar)) {
-				return false;
+			if (currentChar != nextChar) {
+				return;
 			}
 		}
 
 		foundSequences++;
-		return true;
 	}
 
-	private boolean checkDiagonalBackwardSequence(Position initialPos) {
+	private void checkDiagonalBackwardSequence(Position initialPos) {
 
 		if (!shouldCheckDiagonalBackward(initialPos)) {
-			return false;
+			return;
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
 
 			int currentX = initialPos.getX() - (i - initialPos.getY());
 
-			char currentChar = dna[i].charAt(currentX);
-			char nextChar = dna[i + 1].charAt(currentX - 1);
+			char currentChar = getChar(currentX, i);
+			char nextChar = getChar(currentX - 1, i + 1);
 
-			if (!(POSSIBLE_LETTERS.contains(currentChar) && currentChar == nextChar)) {
-				return false;
+			if (currentChar != nextChar) {
+				return;
 			}
 		}
 
 		foundSequences++;
-		return true;
 	}
 
 	private boolean shouldCheckHorizontal(Position pos) {
@@ -176,9 +156,35 @@ public class MutantDetector {
 		return getChar(currentPos) == getChar(prevPos);
 
 	}
+	
+	private char getChar(int x, int y) {
+		return getChar(new Position(x,y));
+	}
 
 	private char getChar(Position pos) {
 		return dna[pos.getY()].charAt(pos.getX());
+	}
+
+	private void validateCharAt(Position pos) {
+
+		char c = getChar(pos);
+
+		if (!POSSIBLE_LETTERS.contains(c)) {
+			throw new InvalidDNAException(
+					"Invalid Character '" + c + "' at position (" + pos.getX() + "," + pos.getY() + ")");
+		}
+	}
+	
+	private void validateRowSize(int i) {
+		if(dna[i].length() != dna.length) {
+			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN" );
+		}
+	}
+	
+	private void validateTableSize() {
+		if(dna.length < SEQUENCE_LENGTH) {
+			throw new InvalidDNAException("Table sould be at least " + SEQUENCE_LENGTH + "x" + SEQUENCE_LENGTH);
+		}
 	}
 
 }

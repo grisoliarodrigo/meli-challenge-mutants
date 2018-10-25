@@ -17,7 +17,6 @@ public class Position {
 	public int getY() {
 		return y;
 	}
-
 	
 	public boolean isValid(int tableLength) {
 		return x >= 0 && y >= 0 &&
