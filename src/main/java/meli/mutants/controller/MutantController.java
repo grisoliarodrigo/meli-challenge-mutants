@@ -1,5 +1,8 @@
 package meli.mutants.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +25,7 @@ public class MutantController {
 	private PersonRepository personRepository;	
 	
 	@RequestMapping(value = "/mutant", method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody Person person) {
+    public ResponseEntity<?> isMutant(@RequestBody Person person) {
 		
 		person.setMutant(new MutantDetector().isMutant(person.getDna()));
 		personRepository.save(person);
@@ -34,6 +37,23 @@ public class MutantController {
 		} else {
 			return new ResponseEntity<String>(headers, HttpStatus.FORBIDDEN);
 		}
+ 
+    }
+	
+	@RequestMapping(value = "/stats", method = RequestMethod.GET)
+    public Map<String, Object> getStats() {
+		
+		Long totalCount = personRepository.count();
+		Long mutantsCount = personRepository.countByMutant(true);
+		Long humansCount = totalCount - mutantsCount;
+		Double ratio =  (double)mutantsCount / (double)totalCount;
+		
+		HashMap<String, Object> stats = new HashMap<String, Object>();
+	    stats.put("count_mutant_dna", mutantsCount);
+	    stats.put("count_human_dna", humansCount);
+	    stats.put("ratio", ratio);
+	    
+	    return stats;
  
     }
 

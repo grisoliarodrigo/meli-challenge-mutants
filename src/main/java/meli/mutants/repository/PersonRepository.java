@@ -8,6 +8,6 @@ import meli.mutants.domain.Person;
 @Repository
 public interface PersonRepository extends MongoRepository<Person, String> {
 	
-	
+	public Long countByMutant(boolean isMutant); 
 
 }
