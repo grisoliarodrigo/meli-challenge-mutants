@@ -1,4 +1,4 @@
-package meli.mutants;
+package meli.mutants.util.detector;
 import org.junit.Test;
 
 import junit.framework.Assert;
@@ -15,7 +15,7 @@ public class MutantDetectorTest {
 	
 	@Test
 	public void testIsNotMutant() {
-		String[] dna = {"ATGCGA","CAGTGC","TTATTT","AGAAGG","CACCTA","TCACTG"};
+		String[] dna = {"GGGGCC","ATATAT","GCGCGC","ATATAT","GCGCGC","ATATAT"};
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
 	
@@ -44,7 +44,7 @@ public class MutantDetectorTest {
 	}
 	
 	@Test
-	public void oneHorizontalFiveLettersSequenceIsNotMutant() {
+	public void testIsNotMutantOneHorizontalFiveLettersSequence() {
 		String[] dna = {"ATATAT", "GGGGGC", "ATATAT", "GCGCGC", "ATATAT", "GCGCGC"};
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
