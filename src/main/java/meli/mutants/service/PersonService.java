@@ -17,7 +17,7 @@ public class PersonService {
 	private PersonRepository personRepository;
 	
 	public void save(Person person) {
-		boolean isMutant = new MutantDetector().isMutant(person.getDna());
+		boolean isMutant = isMutant(person.getDna());
 		person.setMutant(isMutant);
 		personRepository.save(person);
 	}
@@ -26,6 +26,10 @@ public class PersonService {
 		Long mutantCount = personRepository.countByMutant(true);
 		Long humanCount = personRepository.count();
 		return new Stats(mutantCount, humanCount);
+	}
+	
+	public boolean isMutant(String[] dna) {
+		return new MutantDetector(dna).isMutant();
 	}
 
 }

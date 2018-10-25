@@ -19,8 +19,10 @@ public class Position {
 	}
 
 	
-	public boolean equals(Position pos) {
-		return pos.x == this.x && pos.y == this.y;
+	public boolean isValid(int tableLength) {
+		return x >= 0 && y >= 0 &&
+			   x <= tableLength - 1 && y <= tableLength - 1 ;
 	}
+
 	
 }
