@@ -70,9 +70,11 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
+			
+			validateRowSize(i+1);
 			char currentChar = getChar(initialPos.getX(), i);
 			char nextChar = getChar(initialPos.getX(), i + 1);
-
+			
 			if (currentChar != nextChar) {
 				return;
 			}
@@ -88,7 +90,8 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
-
+			
+			validateRowSize(i+1);
 			int currentX = initialPos.getX() + (i - initialPos.getY());
 			char currentChar = getChar(currentX, i);
 			char nextChar = getChar(currentX + 1, i + 1);
@@ -108,7 +111,7 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
-
+			validateRowSize(i+1);
 			int currentX = initialPos.getX() - (i - initialPos.getY());
 
 			char currentChar = getChar(currentX, i);

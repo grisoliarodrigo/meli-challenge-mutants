@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 import meli.mutants.util.detector.MutantDetector;
+import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 public class MutantDetectorTest {
 	
@@ -71,5 +72,27 @@ public class MutantDetectorTest {
 		String[] dna = {"AAAAAT","GCGCGC","GTATAT","GCGCGC","GTATAT","CCGCGC"};
 		Assert.assertTrue(new MutantDetector(dna).isMutant());
 	}
+	
+	@Test(expected = InvalidDNAException.class)
+	public void testInvalidTableSize() {
+		String[] dna = {"AAA","GCG","GTA"};
+		new MutantDetector(dna).isMutant();
+	}
+	
+	@Test(expected = InvalidDNAException.class)
+	public void testInvalidRowLength() {
+		String rowOfFour = "AAAA";
+		String[] dna = {"AAAAAT",rowOfFour,"GTATAT","GCGCGC","GTATAT","CCGCGC"};
+		new MutantDetector(dna).isMutant();
+	}
+	
+	@Test(expected = InvalidDNAException.class)
+	public void testInvalidCharacter() {
+		char x = 'X';
+		String[] dna = {"AAAAAT","GCGCGG","GTATAT","GCGCGC","GTATAT","CCGCG" + x};
+		new MutantDetector(dna).isMutant();
+	}
+	
+	
 	
 }
