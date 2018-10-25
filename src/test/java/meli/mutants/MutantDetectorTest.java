@@ -2,9 +2,9 @@ package meli.mutants;
 import org.junit.Test;
 
 import junit.framework.Assert;
-import meli.mutants.detector.MutantDetector;
-import meli.mutants.detector.Position;
-import meli.mutants.detector.exceptions.InvalidDNAException;
+import meli.mutants.util.detector.MutantDetector;
+import meli.mutants.util.detector.Position;
+import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 public class MutantDetectorTest {
 

@@ -1,4 +1,4 @@
-package meli.mutants.detector;
+package meli.mutants.util.detector;
 
 public class Position {
 	

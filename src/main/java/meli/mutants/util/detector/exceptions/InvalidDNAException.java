@@ -1,4 +1,4 @@
-package meli.mutants.detector.exceptions;
+package meli.mutants.util.detector.exceptions;
 
 public class InvalidDNAException extends RuntimeException {
 	

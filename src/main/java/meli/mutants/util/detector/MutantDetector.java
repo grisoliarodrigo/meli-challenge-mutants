@@ -1,9 +1,9 @@
-package meli.mutants.detector;
+package meli.mutants.util.detector;
 
 import java.util.Arrays;
 import java.util.List;
 
-import meli.mutants.detector.exceptions.InvalidDNAException;
+import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 public class MutantDetector {
 
