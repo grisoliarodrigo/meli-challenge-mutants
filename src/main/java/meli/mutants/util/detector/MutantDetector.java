@@ -13,7 +13,7 @@ public class MutantDetector {
 
 	private String[] dna;
 	private int foundSequences;
-
+	
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
 	}
@@ -51,7 +51,7 @@ public class MutantDetector {
 			return;
 		}
 
-		for (int i = initialPos.getX(); i < SEQUENCE_LENGTH - 1 + initialPos.getX(); i++) {
+		for (int i = initialPos.getX(); i < initialPos.getX() + SEQUENCE_LENGTH - 1; i++) {
 			char currentChar = getChar(i, initialPos.getY());
 			char nextChar = getChar(i + 1, initialPos.getY());
 
@@ -69,7 +69,7 @@ public class MutantDetector {
 			return;
 		}
 
-		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
 
 			validateRowSize(i + 1);
 			char currentChar = getChar(initialPos.getX(), i);
@@ -89,7 +89,7 @@ public class MutantDetector {
 			return;
 		}
 
-		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
 
 			validateRowSize(i + 1);
 			int currentX = initialPos.getX() + (i - initialPos.getY());
@@ -110,7 +110,7 @@ public class MutantDetector {
 			return;
 		}
 
-		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
+		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
 			validateRowSize(i + 1);
 			int currentX = initialPos.getX() - (i - initialPos.getY());
 
