@@ -88,7 +88,7 @@ public class MutantDetectorTest {
 	@Test(expected = InvalidDNAException.class)
 	public void testInvalidCharacter() {
 		char x = 'X';
-		String[] dna = {"AAAAAT","GCGCGG","GTATAT","GCGCGC","GTATAT","CCGCG" + x};
+		String[] dna = {"AAAAAT","GCGCGG","GTATAT","GCGCGC","GTATAT",("CCGCG" + x)};
 		new MutantDetector(dna).isMutant();
 	}
 	

@@ -14,7 +14,7 @@ import meli.mutants.util.detector.MutantDetector;
 public class PersonService {
 	
 	@Autowired
-	private PersonRepository personRepository;
+	public PersonRepository personRepository;
 	
 	public void save(Person person) {
 		boolean isMutant = isMutant(person.getDna());
