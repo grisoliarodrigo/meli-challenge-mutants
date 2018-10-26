@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import junit.framework.Assert;
@@ -25,6 +26,7 @@ public class PersonServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
+		mockRepository();
 		person = new Person();
 	}
 	
@@ -46,6 +48,29 @@ public class PersonServiceTest {
 	public void test_save_fails_with_invalid_dna() {
 		person.setDna(invalidDna);
 		personService.save(person);
+	}
+	
+	@Test
+	public void test_stats_mutants_count() {
+		Stats stats = personService.getStats();
+		Assert.assertEquals(new Long(50), stats.getMutantCount());
+	}
+	
+	@Test
+	public void test_stats_human_count() {
+		Stats stats = personService.getStats();
+		Assert.assertEquals(new Long(100), stats.getHumanCount());
+	}
+	
+	@Test
+	public void test_stats_ratio() {
+		Stats stats = personService.getStats();
+		Assert.assertEquals(0.5, stats.getRatio());
+	}
+	
+	private void mockRepository() {
+		Mockito.when(personRepository.count()).thenReturn((long) 100);
+		Mockito.when(personRepository.countByMutant(true)).thenReturn((long) 50);
 	}
 	
 }
