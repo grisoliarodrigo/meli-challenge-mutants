@@ -21,18 +21,18 @@ public class MutantDetector {
 	public boolean isMutant() {
 
 		foundSequences = 0;
-		
+
 		validateTableSize();
 
 		for (int i = 0; i < dna.length; i++) {
-			
+
 			validateRowSize(i);
 
 			for (int j = 0; j < dna.length; j++) {
 
 				Position pos = new Position(j, i);
 				validateCharAt(pos);
-				
+
 				checkHorizontalSequence(pos);
 				checkVerticalSequence(pos);
 				checkDiagonalFowardSequence(pos);
@@ -70,11 +70,11 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
-			
-			validateRowSize(i+1);
+
+			validateRowSize(i + 1);
 			char currentChar = getChar(initialPos.getX(), i);
 			char nextChar = getChar(initialPos.getX(), i + 1);
-			
+
 			if (currentChar != nextChar) {
 				return;
 			}
@@ -90,8 +90,8 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
-			
-			validateRowSize(i+1);
+
+			validateRowSize(i + 1);
 			int currentX = initialPos.getX() + (i - initialPos.getY());
 			char currentChar = getChar(currentX, i);
 			char nextChar = getChar(currentX + 1, i + 1);
@@ -111,7 +111,7 @@ public class MutantDetector {
 		}
 
 		for (int i = initialPos.getY(); i < SEQUENCE_LENGTH - 1 + initialPos.getY(); i++) {
-			validateRowSize(i+1);
+			validateRowSize(i + 1);
 			int currentX = initialPos.getX() - (i - initialPos.getY());
 
 			char currentChar = getChar(currentX, i);
@@ -127,27 +127,31 @@ public class MutantDetector {
 
 	private boolean shouldCheckHorizontal(Position pos) {
 		Position prevPos = new Position(pos.getX() - 1, pos.getY());
-		return pos.getX() + SEQUENCE_LENGTH <= dna.length && !prevCharIsEquals(pos, prevPos);
+		boolean isInnerSequence = pos.getX() + SEQUENCE_LENGTH <= dna.length;
+		return shouldCheckPosition(pos, prevPos, isInnerSequence);
 	}
 
 	private boolean shouldCheckVertical(Position pos) {
 		Position prevPos = new Position(pos.getX(), pos.getY() - 1);
-		return pos.getY() + SEQUENCE_LENGTH <= dna.length && !prevCharIsEquals(pos, prevPos);
+		boolean isInnerSequence = pos.getY() + SEQUENCE_LENGTH <= dna.length;
+		return shouldCheckPosition(pos, prevPos, isInnerSequence);
 	}
 
 	private boolean shouldCheckDiagonalFoward(Position pos) {
 		Position prevPos = new Position(pos.getX() - 1, pos.getY() - 1);
 
-		return pos.getX() + SEQUENCE_LENGTH <= dna.length && pos.getY() + SEQUENCE_LENGTH <= dna.length
-				&& !prevCharIsEquals(pos, prevPos);
+		boolean isInnerSequence = pos.getX() + SEQUENCE_LENGTH <= dna.length
+				&& pos.getY() + SEQUENCE_LENGTH <= dna.length;
+
+		return shouldCheckPosition(pos, prevPos, isInnerSequence);
 	}
 
 	private boolean shouldCheckDiagonalBackward(Position pos) {
-
 		Position prevPos = new Position(pos.getX() + 1, pos.getY() - 1);
 
-		return pos.getY() + SEQUENCE_LENGTH <= dna.length && pos.getX() + 1 - SEQUENCE_LENGTH >= 0
-				&& !prevCharIsEquals(pos, prevPos);
+		boolean isInnerSequence = pos.getY() + SEQUENCE_LENGTH <= dna.length && pos.getX() + 1 - SEQUENCE_LENGTH >= 0;
+
+		return shouldCheckPosition(pos, prevPos, isInnerSequence);
 	}
 
 	private boolean prevCharIsEquals(Position currentPos, Position prevPos) {
@@ -159,9 +163,13 @@ public class MutantDetector {
 		return getChar(currentPos) == getChar(prevPos);
 
 	}
-	
+
+	private boolean shouldCheckPosition(Position pos, Position prevPos, boolean isInnerSequence) {
+		return foundSequences < SEQUENCES_FOR_POSITIVE && !prevCharIsEquals(pos, prevPos) && isInnerSequence;
+	}
+
 	private char getChar(int x, int y) {
-		return getChar(new Position(x,y));
+		return getChar(new Position(x, y));
 	}
 
 	private char getChar(Position pos) {
@@ -177,15 +185,15 @@ public class MutantDetector {
 					"Invalid Character '" + c + "' at position (" + pos.getX() + "," + pos.getY() + ")");
 		}
 	}
-	
+
 	private void validateRowSize(int i) {
-		if(dna[i].length() != dna.length) {
-			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN" );
+		if (dna[i].length() != dna.length) {
+			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN");
 		}
 	}
-	
+
 	private void validateTableSize() {
-		if(dna.length < SEQUENCE_LENGTH) {
+		if (dna.length < SEQUENCE_LENGTH) {
 			throw new InvalidDNAException("Table sould be at least " + SEQUENCE_LENGTH + "x" + SEQUENCE_LENGTH);
 		}
 	}

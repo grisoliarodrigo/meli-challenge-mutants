@@ -2,7 +2,6 @@ package meli.mutants.util.detector;
 import org.junit.Test;
 
 import junit.framework.Assert;
-import meli.mutants.util.detector.MutantDetector;
 import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 public class MutantDetectorTest {
@@ -92,7 +91,5 @@ public class MutantDetectorTest {
 		String[] dna = {"AAAAAT","GCGCGG","GTATAT","GCGCGC","GTATAT","CCGCG" + x};
 		new MutantDetector(dna).isMutant();
 	}
-	
-	
 	
 }
