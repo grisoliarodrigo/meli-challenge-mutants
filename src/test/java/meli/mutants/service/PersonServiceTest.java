@@ -1,4 +1,4 @@
-package meli.mutants.domain;
+package meli.mutants.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import junit.framework.Assert;
+import meli.mutants.domain.Person;
+import meli.mutants.domain.Stats;
 import meli.mutants.repository.PersonRepository;
 import meli.mutants.service.PersonService;
 import meli.mutants.util.detector.exceptions.InvalidDNAException;
