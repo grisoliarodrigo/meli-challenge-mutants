@@ -27,13 +27,12 @@ public class MutantDetector {
 
 		readRows();
 		readColumns();
-		readFowardDiagonals();
-		readBackwardDiagonals();
+		readUpFowardDiagonals();
+		readDownFowardDiagonals();
 
 		return foundSequences >= SEQUENCES_FOR_POSITIVE;
 	}
 
-	
 	private void readRows() {
 
 		for (int i = 0; i < dna.length; i++) {
@@ -42,9 +41,9 @@ public class MutantDetector {
 			validateCharAt(i, 0);
 			consecutive = 0;
 
-			for (int j = 1; j < dna.length; j++) {
+			for (int j = 0; j < dna.length - 1; j++) {
 				validateCharAt(i, j);
-				readPosition(i, j, getChar(i, j - 1));
+				readPosition(i, j, getChar(i, j + 1));
 			}
 
 		}
@@ -52,40 +51,72 @@ public class MutantDetector {
 	}
 
 	private void readColumns() {
-		
+
 		int j = 0;
-		int i = 1;
-		
-		while(keepChecking() && j < dna.length) {
-			
-			i = 1;
+
+		while (keepChecking() && j < dna.length) {
+
+			int i = 0;
 			consecutive = 0;
-			
-			while(keepChecking() && i < dna.length) {
-				readPosition(i, j, getChar(i - 1, j));
+
+			while (keepChecking() && i < dna.length - 1) {
+				readPosition(i, j, getChar(i + 1, j));
 				i++;
 			}
-			
+
 			j++;
 		}
+
+	}
+
+	private void readUpFowardDiagonals() {
 		
+		int row = SEQUENCE_LENGTH - 1;
+		
+		while(keepChecking() && row < dna.length) {
+			
+			int i = row;
+			int j = 0;
+			
+			while(keepChecking() && i > 0) {
+				readPosition(i, j, getChar(i -1, j + 1));
+				i--;
+				j++;
+			}
+			
+			row++;
+			
+		}
+		
+		
+		int column = 1;
+		
+		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+			
+			int i = dna.length - 1;
+			int j = column;
+			
+			while(keepChecking() && j < dna.length - 1) {
+				readPosition(i, j, getChar(i - 1, j + 1));
+				i--; 
+				j++;
+			}
+			
+			column++;
+			
+		}
+
 	}
 
-	private void readBackwardDiagonals() {
+	private void readDownFowardDiagonals() {
 		// TODO Auto-generated method stub
-
 	}
 
-	private void readFowardDiagonals() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	private void readPosition(int i, int j, char prevChar) {
+	private void readPosition(int i, int j, char nextChar) {
 
 		char currentChar = getChar(i, j);
 
-		if (currentChar == prevChar) {
+		if (currentChar == nextChar) {
 			consecutive++;
 		} else {
 			consecutive = 0;
@@ -96,7 +127,7 @@ public class MutantDetector {
 			consecutive = 0;
 		}
 	}
-	
+
 	private boolean keepChecking() {
 		return foundSequences < SEQUENCES_FOR_POSITIVE;
 	}
