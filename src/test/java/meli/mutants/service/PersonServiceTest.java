@@ -1,22 +1,16 @@
 package meli.mutants.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import junit.framework.Assert;
 import meli.mutants.domain.Person;
 import meli.mutants.domain.Stats;
 import meli.mutants.repository.PersonRepository;
-import meli.mutants.service.PersonService;
 import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 public class PersonServiceTest {
@@ -26,7 +20,7 @@ public class PersonServiceTest {
 	
 	String[] mutantDna = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
 	String[] notMutantDna = {"GGGGCC","ATATAT","GCGCGC","ATATAT","GCGCGC","ATATAT"};
-	String[] invalidDna = {"Y"};
+	String[] invalidDna = {"A"};
 
 	Person person;
  	
