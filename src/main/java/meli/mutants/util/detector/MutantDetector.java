@@ -12,8 +12,10 @@ public class MutantDetector {
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A', 'T', 'C', 'G');
 
 	private String[] dna;
+
 	private int foundSequences;
-	
+	private int consecutive = 0;
+
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
 	}
@@ -22,7 +24,7 @@ public class MutantDetector {
 
 		foundSequences = 0;
 		validateTableSize();
-		
+
 		readRows();
 		readColumns();
 		readFowardDiagonals();
@@ -33,51 +35,72 @@ public class MutantDetector {
 
 	
 	private void readRows() {
-		
-		for(int i = 0; i < dna.length; i++) {
-			
+
+		for (int i = 0; i < dna.length; i++) {
+
 			validateRow(i);
 			validateCharAt(i, 0);
-			int consecutive = 0;
-			
-			for(int j = 1; j < dna.length; j++) {
-				
-				char prevChar = getChar(i, j - 1);
-				char currentChar = getChar(i, j);
+			consecutive = 0;
+
+			for (int j = 1; j < dna.length; j++) {
 				validateCharAt(i, j);
-				
-				if(currentChar == prevChar) {
-					consecutive ++;
-				} else {
-					consecutive = 0;
-				}
-				
-				if(consecutive == SEQUENCE_LENGTH - 1) {
-					foundSequences ++;
-					consecutive = 0;
-				}
- 				
+				readPosition(i, j, getChar(i, j - 1));
 			}
-			
+
 		}
-		
+
 	}
 
 	private void readColumns() {
 		
+		int j = 0;
+		int i = 1;
+		
+		while(keepChecking() && j < dna.length) {
+			
+			i = 1;
+			consecutive = 0;
+			
+			while(keepChecking() && i < dna.length) {
+				readPosition(i, j, getChar(i - 1, j));
+				i++;
+			}
+			
+			j++;
+		}
+		
 	}
-	
+
 	private void readBackwardDiagonals() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void readFowardDiagonals() {
 		// TODO Auto-generated method stub
-		
+
+	}
+	
+	private void readPosition(int i, int j, char prevChar) {
+
+		char currentChar = getChar(i, j);
+
+		if (currentChar == prevChar) {
+			consecutive++;
+		} else {
+			consecutive = 0;
+		}
+
+		if (consecutive == SEQUENCE_LENGTH - 1) {
+			foundSequences++;
+			consecutive = 0;
+		}
+	}
+	
+	private boolean keepChecking() {
+		return foundSequences < SEQUENCES_FOR_POSITIVE;
 	}
 
-	
 	private char getChar(int i, int j) {
 		return dna[i].charAt(j);
 	}
@@ -87,8 +110,7 @@ public class MutantDetector {
 		char c = getChar(i, j);
 
 		if (!POSSIBLE_LETTERS.contains(c)) {
-			throw new InvalidDNAException(
-					"Invalid Character '" + c + "' at position (" + j + "," + i + ").");
+			throw new InvalidDNAException("Invalid Character '" + c + "' at position (" + j + "," + i + ").");
 		}
 	}
 
