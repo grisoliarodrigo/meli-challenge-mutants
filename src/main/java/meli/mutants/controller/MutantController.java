@@ -18,41 +18,47 @@ import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 @RestController
 public class MutantController {
-	
+
 	@Autowired
 	private PersonService personService;
-	
+
 	@RequestMapping(value = "/mutant", method = RequestMethod.POST)
-    public ResponseEntity<?> isMutant(@RequestBody Person person) {
-		
+	public ResponseEntity<?> isMutant(@RequestBody Person person) {
+
 		try {
 			personService.save(person);
-		} catch(InvalidDNAException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (InvalidDNAException e) {
+			return getBadRequestMessage(e.getMessage());
 		}
 
-		if(person.isMutant()) {
+		if (person.isMutant()) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
- 
-    }
-	
+
+	}
+
 	@RequestMapping(value = "/stats")
-    public Stats getStats() {
-	    return personService.getStats();
-    }
-	
+	public Stats getStats() {
+		return personService.getStats();
+	}
+
 	@RequestMapping(value = "/")
-    public Map<String, String> APIstatus() {
-		
+	public Map<String, String> APIstatus() {
+
 		Map<String, String> response = new HashMap<String, String>();
-		
+
 		response.put("status", "OK");
 		response.put("version", "0.0.2");
-		
-		return response;
-    }
 
+		return response;
+	}
+
+	private ResponseEntity<?> getBadRequestMessage(String message) {
+		Map<String, String> response = new HashMap<String, String>();
+		response.put("message", message);
+		response.put("status", HttpStatus.BAD_REQUEST.toString());
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
 }

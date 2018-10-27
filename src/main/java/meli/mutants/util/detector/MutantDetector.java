@@ -178,7 +178,7 @@ public class MutantDetector {
 
 	private void validateRow(int i) {
 		if (dna[i].length() != dna.length) {
-			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN.");
+			throw new InvalidDNAException("Row " + i + " does not match dna array lenght. Table sould be NxN.");
 		}
 	}
 
