@@ -11,10 +11,6 @@ public class Person {
 	
 	public Person() {}
 	
-	public Person(String [] dna) {
-		this.dna = dna;
-	}
-
 	public String getId() {
 		return id;
 	}

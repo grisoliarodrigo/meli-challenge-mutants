@@ -26,7 +26,7 @@ public class PersonServiceTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		mockRepository();
+		mockPersonRepository();
 		person = new Person();
 	}
 	
@@ -68,7 +68,7 @@ public class PersonServiceTest {
 		Assert.assertEquals(0.5, stats.getRatio());
 	}
 	
-	private void mockRepository() {
+	private void mockPersonRepository() {
 		Mockito.when(personRepository.count()).thenReturn((long) 100);
 		Mockito.when(personRepository.countByMutant(true)).thenReturn((long) 50);
 	}
