@@ -42,17 +42,8 @@ public class MutantController {
     }
 	
 	@RequestMapping(value = "/stats", method = RequestMethod.GET)
-    public Map<String, Object> getStats() {
-		
-		Stats stats = personService.getStats();
-		
-		HashMap<String, Object> statsMap = new HashMap<String, Object>();
-	    statsMap.put("count_mutant_dna", stats.getMutantCount());
-	    statsMap.put("count_human_dna", stats.getHumanCount());
-	    statsMap.put("ratio", stats.getRatio());
-	    
-	    return statsMap;
- 
+    public Stats getStats() {
+	    return personService.getStats();
     }
 
 }

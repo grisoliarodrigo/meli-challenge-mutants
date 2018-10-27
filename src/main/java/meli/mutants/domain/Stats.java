@@ -1,33 +1,38 @@
 package meli.mutants.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Stats {
 	
-	private Long mutantCount;
-	private Long humanCount;
+	private Long countMutantDna;
+	private Long countHumanDna;
 	
-	public Stats(Long mutantCount, Long humanCount) {
-		this.mutantCount = mutantCount;
-		this.humanCount = humanCount;
+	public Stats(Long countMutantDna, Long countHumanDna) {
+		this.countMutantDna = countMutantDna;
+		this.countHumanDna = countHumanDna;
 	}
 	
+	@JsonProperty("ratio")
 	public Double getRatio() {
-		return (double) mutantCount / (double) humanCount;
+		return (double) countMutantDna / (double) countHumanDna;
+	}
+	
+	@JsonProperty("count_mutant_dna")
+	public Long getCountMutantDna() {
+		return countMutantDna;
 	}
 
-	public Long getMutantCount() {
-		return mutantCount;
+	public void setCountMutantDna(Long countMutantDna) {
+		this.countMutantDna = countMutantDna;
+	}
+	
+	@JsonProperty("count_human_dna")
+	public Long getCountHumanDna() {
+		return countHumanDna;
 	}
 
-	public void setMutantCount(Long mutantCount) {
-		this.mutantCount = mutantCount;
-	}
-
-	public Long getHumanCount() {
-		return humanCount;
-	}
-
-	public void setHumanCount(Long humanCount) {
-		this.humanCount = humanCount;
+	public void setCountHumanDna(Long countHumanDna) {
+		this.countHumanDna = countHumanDna;
 	}
 
 }

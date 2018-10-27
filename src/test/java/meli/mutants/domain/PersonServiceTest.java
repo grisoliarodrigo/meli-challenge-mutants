@@ -53,13 +53,13 @@ public class PersonServiceTest {
 	@Test
 	public void test_stats_mutants_count() {
 		Stats stats = personService.getStats();
-		Assert.assertEquals(new Long(50), stats.getMutantCount());
+		Assert.assertEquals(new Long(50), stats.getCountMutantDna());
 	}
 	
 	@Test
 	public void test_stats_human_count() {
 		Stats stats = personService.getStats();
-		Assert.assertEquals(new Long(100), stats.getHumanCount());
+		Assert.assertEquals(new Long(100), stats.getCountHumanDna());
 	}
 	
 	@Test
