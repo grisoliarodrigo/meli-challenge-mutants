@@ -1,8 +1,5 @@
 package meli.mutants.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +33,17 @@ public class MutantController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		
-		
  
     }
 	
-	@RequestMapping(value = "/stats", method = RequestMethod.GET)
+	@RequestMapping(value = "/stats")
     public Stats getStats() {
 	    return personService.getStats();
+    }
+	
+	@RequestMapping(value = "/")
+    public String status() {
+		return "Status: OK";
     }
 
 }
