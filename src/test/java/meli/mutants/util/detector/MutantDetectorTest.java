@@ -92,4 +92,23 @@ public class MutantDetectorTest {
 		new MutantDetector(dna).isMutant();
 	}
 	
+	@Test
+	public void test_is_mutant_with_two_consecutive_diagonals() {
+		String[] dna = {
+			"ATATATATA",
+			"CGCGCGCAC",
+			"ATATATATA",
+			"CGCGCACGC",
+			"ATATATATA",
+			"CGCACGCGT",
+			"ATATATATA",
+			"CACGCGTGC",
+			"ATATATATA"				
+		};
+		
+		MutantDetector md = new MutantDetector(dna);
+		Assert.assertTrue(md.isMutant());
+	}
+
+	
 }

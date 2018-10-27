@@ -38,12 +38,11 @@ public class MutantDetector {
 		for (int i = 0; i < dna.length; i++) {
 
 			validateRow(i);
-			validateCharAt(i, 0);
 			consecutive = 0;
 
 			for (int j = 0; j < dna.length - 1; j++) {
-				validateCharAt(i, j);
-				readPosition(i, j, getChar(i, j + 1));
+				validateCharAt(i, j + 1);
+				readPosition(i, j, getCharAt(i, j + 1));
 			}
 
 		}
@@ -60,7 +59,7 @@ public class MutantDetector {
 			consecutive = 0;
 
 			while (keepChecking() && i < dna.length - 1) {
-				readPosition(i, j, getChar(i + 1, j));
+				readPosition(i, j, getCharAt(i + 1, j));
 				i++;
 			}
 
@@ -79,7 +78,7 @@ public class MutantDetector {
 			int j = 0;
 			
 			while(keepChecking() && i > 0) {
-				readPosition(i, j, getChar(i -1, j + 1));
+				readPosition(i, j, getCharAt(i -1, j + 1));
 				i--;
 				j++;
 			}
@@ -97,7 +96,7 @@ public class MutantDetector {
 			int j = column;
 			
 			while(keepChecking() && j < dna.length - 1) {
-				readPosition(i, j, getChar(i - 1, j + 1));
+				readPosition(i, j, getCharAt(i - 1, j + 1));
 				i--; 
 				j++;
 			}
@@ -109,12 +108,44 @@ public class MutantDetector {
 	}
 
 	private void readDownFowardDiagonals() {
-		// TODO Auto-generated method stub
+		
+		int row = dna.length - SEQUENCE_LENGTH;
+
+		while(keepChecking() && row >= 0) {
+			
+			int i = row;
+			int j = 0;
+
+			while(keepChecking() && i < dna.length - 1) {
+				readPosition(i, j, getCharAt(i + 1, j + 1));
+				i++;
+				j++;
+			}
+			
+			row--;
+		}
+		
+		
+		int column = 1;
+		
+		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+			
+			int i = 0; int j = column;
+			
+			while(keepChecking() && j < dna.length - 1) {
+				readPosition(i, j, getCharAt(i + 1, j + 1));
+				i++; 
+				j++;
+			}
+			
+			column++;
+			
+		}
 	}
 
 	private void readPosition(int i, int j, char nextChar) {
 
-		char currentChar = getChar(i, j);
+		char currentChar = getCharAt(i, j);
 
 		if (currentChar == nextChar) {
 			consecutive++;
@@ -132,13 +163,13 @@ public class MutantDetector {
 		return foundSequences < SEQUENCES_FOR_POSITIVE;
 	}
 
-	private char getChar(int i, int j) {
+	private char getCharAt(int i, int j) {
 		return dna[i].charAt(j);
 	}
 
 	private void validateCharAt(int i, int j) {
 
-		char c = getChar(i, j);
+		char c = getCharAt(i, j);
 
 		if (!POSSIBLE_LETTERS.contains(c)) {
 			throw new InvalidDNAException("Invalid Character '" + c + "' at position (" + j + "," + i + ").");
