@@ -12,8 +12,10 @@ public class MutantDetector {
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A', 'T', 'C', 'G');
 
 	private String[] dna;
+
 	private int foundSequences;
-	
+	private int consecutive = 0;
+
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
 	}
@@ -21,172 +23,160 @@ public class MutantDetector {
 	public boolean isMutant() {
 
 		foundSequences = 0;
-
 		validateTableSize();
 
-		for (int i = 0; i < dna.length; i++) {
-
-			validateRowSize(i);
-
-			for (int j = 0; j < dna.length; j++) {
-
-				Position pos = new Position(j, i);
-				validateCharAt(pos);
-
-				checkHorizontalSequence(pos);
-				checkVerticalSequence(pos);
-				checkDiagonalFowardSequence(pos);
-				checkDiagonalBackwardSequence(pos);
-
-			}
-
-		}
+		readRows();
+		readColumns();
+		readUpFowardDiagonals();
+		readDownFowardDiagonals();
 
 		return foundSequences >= SEQUENCES_FOR_POSITIVE;
 	}
 
-	private void checkHorizontalSequence(Position initialPos) {
+	private void readRows() {
 
-		if (!shouldCheckHorizontal(initialPos)) {
-			return;
-		}
+		for (int i = 0; i < dna.length; i++) {
 
-		for (int i = initialPos.getX(); i < initialPos.getX() + SEQUENCE_LENGTH - 1; i++) {
-			char currentChar = getChar(i, initialPos.getY());
-			char nextChar = getChar(i + 1, initialPos.getY());
+			validateRow(i);
+			consecutive = 0;
 
-			if (currentChar != nextChar) {
-				return;
+			for (int j = 0; j < dna.length - 1; j++) {
+				validateCharAt(i, j + 1);
+				readPosition(i, j, getCharAt(i, j + 1));
 			}
+
 		}
 
-		foundSequences++;
 	}
 
-	private void checkVerticalSequence(Position initialPos) {
+	private void readColumns() {
 
-		if (!shouldCheckVertical(initialPos)) {
-			return;
-		}
+		int j = 0;
 
-		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
+		while (keepChecking() && j < dna.length) {
 
-			validateRowSize(i + 1);
-			char currentChar = getChar(initialPos.getX(), i);
-			char nextChar = getChar(initialPos.getX(), i + 1);
+			int i = 0;
+			consecutive = 0;
 
-			if (currentChar != nextChar) {
-				return;
+			while (keepChecking() && i < dna.length - 1) {
+				readPosition(i, j, getCharAt(i + 1, j));
+				i++;
 			}
+
+			j++;
 		}
 
-		foundSequences++;
 	}
 
-	private void checkDiagonalFowardSequence(Position initialPos) {
-
-		if (!shouldCheckDiagonalFoward(initialPos)) {
-			return;
-		}
-
-		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
-
-			validateRowSize(i + 1);
-			int currentX = initialPos.getX() + (i - initialPos.getY());
-			char currentChar = getChar(currentX, i);
-			char nextChar = getChar(currentX + 1, i + 1);
-
-			if (currentChar != nextChar) {
-				return;
+	private void readUpFowardDiagonals() {
+		
+		int row = SEQUENCE_LENGTH - 1;
+		
+		while(keepChecking() && row < dna.length) {
+			
+			int i = row;
+			int j = 0;
+			
+			while(keepChecking() && i > 0) {
+				readPosition(i, j, getCharAt(i -1, j + 1));
+				i--;
+				j++;
 			}
+			
+			row++;
+			
 		}
-
-		foundSequences++;
-	}
-
-	private void checkDiagonalBackwardSequence(Position initialPos) {
-
-		if (!shouldCheckDiagonalBackward(initialPos)) {
-			return;
-		}
-
-		for (int i = initialPos.getY(); i < initialPos.getY() + SEQUENCE_LENGTH - 1; i++) {
-			validateRowSize(i + 1);
-			int currentX = initialPos.getX() - (i - initialPos.getY());
-
-			char currentChar = getChar(currentX, i);
-			char nextChar = getChar(currentX - 1, i + 1);
-
-			if (currentChar != nextChar) {
-				return;
+		
+		
+		int column = 1;
+		
+		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+			
+			int i = dna.length - 1;
+			int j = column;
+			
+			while(keepChecking() && j < dna.length - 1) {
+				readPosition(i, j, getCharAt(i - 1, j + 1));
+				i--; 
+				j++;
 			}
+			
+			column++;
+			
 		}
 
-		foundSequences++;
 	}
 
-	private boolean shouldCheckHorizontal(Position pos) {
-		Position prevPos = new Position(pos.getX() - 1, pos.getY());
-		boolean isInnerSequence = pos.getX() + SEQUENCE_LENGTH <= dna.length;
-		return shouldCheckPosition(pos, prevPos, isInnerSequence);
+	private void readDownFowardDiagonals() {
+		
+		int row = dna.length - SEQUENCE_LENGTH;
+
+		while(keepChecking() && row >= 0) {
+			
+			int i = row;
+			int j = 0;
+
+			while(keepChecking() && i < dna.length - 1) {
+				readPosition(i, j, getCharAt(i + 1, j + 1));
+				i++;
+				j++;
+			}
+			
+			row--;
+		}
+		
+		
+		int column = 1;
+		
+		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+			
+			int i = 0; int j = column;
+			
+			while(keepChecking() && j < dna.length - 1) {
+				readPosition(i, j, getCharAt(i + 1, j + 1));
+				i++; 
+				j++;
+			}
+			
+			column++;
+			
+		}
 	}
 
-	private boolean shouldCheckVertical(Position pos) {
-		Position prevPos = new Position(pos.getX(), pos.getY() - 1);
-		boolean isInnerSequence = pos.getY() + SEQUENCE_LENGTH <= dna.length;
-		return shouldCheckPosition(pos, prevPos, isInnerSequence);
-	}
+	private void readPosition(int i, int j, char nextChar) {
 
-	private boolean shouldCheckDiagonalFoward(Position pos) {
-		Position prevPos = new Position(pos.getX() - 1, pos.getY() - 1);
+		char currentChar = getCharAt(i, j);
 
-		boolean isInnerSequence = pos.getX() + SEQUENCE_LENGTH <= dna.length
-				&& pos.getY() + SEQUENCE_LENGTH <= dna.length;
-
-		return shouldCheckPosition(pos, prevPos, isInnerSequence);
-	}
-
-	private boolean shouldCheckDiagonalBackward(Position pos) {
-		Position prevPos = new Position(pos.getX() + 1, pos.getY() - 1);
-
-		boolean isInnerSequence = pos.getY() + SEQUENCE_LENGTH <= dna.length && pos.getX() + 1 - SEQUENCE_LENGTH >= 0;
-
-		return shouldCheckPosition(pos, prevPos, isInnerSequence);
-	}
-
-	private boolean prevCharIsEquals(Position currentPos, Position prevPos) {
-
-		if (!prevPos.isValid(dna.length)) {
-			return false;
+		if (currentChar == nextChar) {
+			consecutive++;
+		} else {
+			consecutive = 0;
 		}
 
-		return getChar(currentPos) == getChar(prevPos);
-
+		if (consecutive == SEQUENCE_LENGTH - 1) {
+			foundSequences++;
+			consecutive = 0;
+		}
 	}
 
-	private boolean shouldCheckPosition(Position pos, Position prevPos, boolean isInnerSequence) {
-		return foundSequences < SEQUENCES_FOR_POSITIVE && !prevCharIsEquals(pos, prevPos) && isInnerSequence;
+	private boolean keepChecking() {
+		return foundSequences < SEQUENCES_FOR_POSITIVE;
 	}
 
-	private char getChar(int x, int y) {
-		return getChar(new Position(x, y));
+	private char getCharAt(int i, int j) {
+		return dna[i].charAt(j);
 	}
 
-	private char getChar(Position pos) {
-		return dna[pos.getY()].charAt(pos.getX());
-	}
+	private void validateCharAt(int i, int j) {
 
-	private void validateCharAt(Position pos) {
-
-		char c = getChar(pos);
+		char c = getCharAt(i, j);
 
 		if (!POSSIBLE_LETTERS.contains(c)) {
-			throw new InvalidDNAException(
-					"Invalid Character '" + c + "' at position (" + pos.getX() + "," + pos.getY() + ").");
+			throw new InvalidDNAException("Invalid Character '" + c + "' at position (" + j + "," + i + ").");
 		}
 	}
 
-	private void validateRowSize(int i) {
+	private void validateRow(int i) {
 		if (dna[i].length() != dna.length) {
 			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN.");
 		}
