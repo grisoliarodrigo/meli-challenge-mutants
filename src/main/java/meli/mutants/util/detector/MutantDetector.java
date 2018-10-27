@@ -182,19 +182,19 @@ public class MutantDetector {
 
 		if (!POSSIBLE_LETTERS.contains(c)) {
 			throw new InvalidDNAException(
-					"Invalid Character '" + c + "' at position (" + pos.getX() + "," + pos.getY() + ")");
+					"Invalid Character '" + c + "' at position (" + pos.getX() + "," + pos.getY() + ").");
 		}
 	}
 
 	private void validateRowSize(int i) {
 		if (dna[i].length() != dna.length) {
-			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN");
+			throw new InvalidDNAException("Row " + i + " does not match dna Array lenght. Table sould be NxN.");
 		}
 	}
 
 	private void validateTableSize() {
 		if (dna.length < SEQUENCE_LENGTH) {
-			throw new InvalidDNAException("Table sould be at least " + SEQUENCE_LENGTH + "x" + SEQUENCE_LENGTH);
+			throw new InvalidDNAException("Table sould be at least " + SEQUENCE_LENGTH + "x" + SEQUENCE_LENGTH + ".");
 		}
 	}
 
