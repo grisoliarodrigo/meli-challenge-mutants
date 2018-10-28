@@ -93,7 +93,7 @@ public class MutantDetector {
 			int i = dna.length - 1;
 			int j = column;
 
-			while (keepChecking() && enoughRemainingSpace((dna.length - column) - j)) {
+			while (keepChecking() && enoughRemainingSpace(dna.length - j)) {
 				readPosition(i, j, i - 1, j + 1);
 				i--;
 				j++;
@@ -114,7 +114,7 @@ public class MutantDetector {
 			int i = row;
 			int j = 0;
 
-			while (keepChecking() && enoughRemainingSpace((dna.length - row) - i)) {
+			while (keepChecking() && enoughRemainingSpace((dna.length - row) - j)) {
 				readPosition(i, j, i + 1, j + 1);
 				i++;
 				j++;
