@@ -1,7 +1,7 @@
 # MeLi Challenge - Mutantes
 [![Build Status](https://travis-ci.org/grisoliarodrigo/meli-challenge-mutants.svg?branch=master)](https://travis-ci.org/grisoliarodrigo/meli-challenge-mutants) [![Coverage Status](https://coveralls.io/repos/github/grisoliarodrigo/meli-challenge-mutants/badge.svg)](https://coveralls.io/github/grisoliarodrigo/meli-challenge-mutants)
 
-API Rest cuya principal funcionalidad consiste en detectar si un humano es mutante o no, en función de su ADN. 
+API Rest cuya principal funcionalidad consiste en detectar si un humano es mutante, o no, en función de su ADN. 
 
 _________________________________________________
 
@@ -11,7 +11,7 @@ La API consta de dos servicios:
 
 ### Servicio Mutant: 
 
-Recibe como parámetro una secuencia de ADN, representada por un array de strings, y responde si la misma pertenece o no a un mutante. Se almacena la secuencia consultada en una base de datos con el propósito de obtener estadísticas. 
+Recibe como parámetro una secuencia de ADN, representada por un array de strings, y responde si la misma pertenece, o no, a un mutante. Se almacena la secuencia consultada en una base de datos, con el propósito de obtener estadísticas. 
 
 - **URL:** http://mutants.us-west-2.elasticbeanstalk.com/mutant
 
