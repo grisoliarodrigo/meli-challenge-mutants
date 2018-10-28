@@ -50,7 +50,7 @@ public class MutantController {
 		Map<String, String> response = new HashMap<String, String>();
 
 		response.put("status", "OK");
-		response.put("version", "0.0.2");
+		response.put("version", "0.0.3");
 
 		return response;
 	}

@@ -1,9 +1,9 @@
 branch-defaults:
   master:
-    environment: development
+    environment: mutants
     group_suffix: null
 deploy:
-  artifact: target/meli-challenge-mutants-0.0.2.jar
+  artifact: target/meli-challenge-mutants-0.0.3.jar
 global:
   application_name: meli-challenge-mutants
   branch: null
