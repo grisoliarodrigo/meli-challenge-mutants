@@ -11,27 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import meli.mutants.domain.Person;
+import meli.mutants.domain.Human;
 import meli.mutants.domain.Stats;
-import meli.mutants.service.PersonService;
+import meli.mutants.service.HumanService;
 import meli.mutants.util.detector.exceptions.InvalidDNAException;
 
 @RestController
 public class MutantController {
 
 	@Autowired
-	private PersonService personService;
+	private HumanService humanService;
 
 	@RequestMapping(value = "/mutant", method = RequestMethod.POST)
-	public ResponseEntity<?> isMutant(@RequestBody Person person) {
+	public ResponseEntity<?> isMutant(@RequestBody Human human) {
 
 		try {
-			personService.save(person);
+			humanService.save(human);
 		} catch (InvalidDNAException e) {
 			return getBadRequestMessage(e.getMessage());
 		}
 
-		if (person.isMutant()) {
+		if (human.isMutant()) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -41,7 +41,7 @@ public class MutantController {
 
 	@RequestMapping(value = "/stats")
 	public Stats getStats() {
-		return personService.getStats();
+		return humanService.getStats();
 	}
 
 	@RequestMapping(value = "/")

@@ -2,14 +2,14 @@ package meli.mutants.domain;
 
 import org.springframework.data.annotation.Id;
 
-public class Person {
+public class Human {
 	
 	@Id
     private String id;
 	private String [] dna;
 	private boolean mutant;
 	
-	public Person() {}
+	public Human() {}
 	
 	public String getId() {
 		return id;
