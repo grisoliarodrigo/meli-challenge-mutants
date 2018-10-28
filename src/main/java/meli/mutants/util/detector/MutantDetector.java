@@ -14,7 +14,6 @@ public class MutantDetector {
 	private String[] dna;
 	private int foundSequences;
 	private int consecutive;
-	
 
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
@@ -52,94 +51,93 @@ public class MutantDetector {
 	private void readColumns() {
 
 		int j = 0;
-		
+
 		while (keepChecking() && j < dna.length) {
-			
+
 			int i = 0;
 			consecutive = 0;
-			
-			while (keepChecking() && dna.length - i >= SEQUENCE_LENGTH - consecutive) {
-				readPosition(i, j, i+1, j);
+
+			while (keepChecking() && enoughRemainingSpace(dna.length - i)) {
+				readPosition(i, j, i + 1, j);
 				i++;
 			}
-			
+
 			j++;
 		}
 
 	}
 
 	private void readUpFowardDiagonals() {
-		
+
 		int row = SEQUENCE_LENGTH - 1;
-		
-		while(keepChecking() && row < dna.length) {
-			
+
+		while (keepChecking() && row < dna.length) {
+
 			int i = row;
 			int j = 0;
 			
-			while(keepChecking() && i > 0) {
-				readPosition(i, j, i-1, j+1);
+			while (keepChecking() && enoughRemainingSpace((row + 1) - j)) {
+				readPosition(i, j, i - 1, j + 1);
 				i--;
 				j++;
 			}
-			
+
 			row++;
-			
+
 		}
-		
-		
+
 		int column = 1;
-		
-		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
-			
+
+		while (keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+
 			int i = dna.length - 1;
 			int j = column;
-			
-			while(keepChecking() && j < dna.length - 1) {
-				readPosition(i, j, i-1, j+1);
-				i--; 
+
+			while (keepChecking() && enoughRemainingSpace((dna.length - column) - j)) {
+				readPosition(i, j, i - 1, j + 1);
+				i--;
 				j++;
 			}
-			
+
 			column++;
-			
+
 		}
 
 	}
 
 	private void readDownFowardDiagonals() {
-		
+
 		int row = dna.length - SEQUENCE_LENGTH;
 
-		while(keepChecking() && row >= 0) {
-			
+		while (keepChecking() && row >= 0) {
+
 			int i = row;
 			int j = 0;
 
-			while(keepChecking() && i < dna.length - 1) {
-				readPosition(i, j, i+1, j+1);
+			while (keepChecking() && enoughRemainingSpace((dna.length - row) - i)) {
+				readPosition(i, j, i + 1, j + 1);
 				i++;
 				j++;
 			}
-			
+
 			row--;
 		}
-		
-		
+
 		int column = 1;
-		
-		while(keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+
+		while (keepChecking() && column < (dna.length - SEQUENCE_LENGTH + 1)) {
+
+			int i = 0;
+			int j = column;
 			
-			int i = 0; int j = column;
-			
-			while(keepChecking() && j < dna.length - 1) {
-				readPosition(i, j, i+1, j+1);
-				i++; 
+			while (keepChecking() && enoughRemainingSpace((dna.length - column) - i)) {
+				readPosition(i, j, i + 1, j + 1);
+				i++;
 				j++;
 			}
-			
+
 			column++;
-			
+
 		}
 	}
 
@@ -162,6 +160,10 @@ public class MutantDetector {
 
 	private boolean keepChecking() {
 		return foundSequences < SEQUENCES_FOR_POSITIVE;
+	}
+	
+	private boolean enoughRemainingSpace(int remainingSpace) {
+		return remainingSpace >= SEQUENCE_LENGTH - consecutive ;
 	}
 
 	private char getCharAt(int i, int j) {
