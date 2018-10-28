@@ -12,9 +12,9 @@ public class MutantDetector {
 	static List<Character> POSSIBLE_LETTERS = Arrays.asList('A', 'T', 'C', 'G');
 
 	private String[] dna;
-
 	private int foundSequences;
-	private int consecutive = 0;
+	private int consecutive;
+	
 
 	public MutantDetector(String[] dna) {
 		this.dna = dna;
@@ -42,7 +42,7 @@ public class MutantDetector {
 
 			for (int j = 0; j < dna.length - 1; j++) {
 				validateCharAt(i, j + 1);
-				readPosition(i, j, getCharAt(i, j + 1));
+				readPosition(i, j, i, j + 1);
 			}
 
 		}
@@ -52,17 +52,17 @@ public class MutantDetector {
 	private void readColumns() {
 
 		int j = 0;
-
+		
 		while (keepChecking() && j < dna.length) {
-
+			
 			int i = 0;
 			consecutive = 0;
-
-			while (keepChecking() && i < dna.length - 1) {
-				readPosition(i, j, getCharAt(i + 1, j));
+			
+			while (keepChecking() && dna.length - i >= SEQUENCE_LENGTH - consecutive) {
+				readPosition(i, j, i+1, j);
 				i++;
 			}
-
+			
 			j++;
 		}
 
@@ -78,7 +78,7 @@ public class MutantDetector {
 			int j = 0;
 			
 			while(keepChecking() && i > 0) {
-				readPosition(i, j, getCharAt(i -1, j + 1));
+				readPosition(i, j, i-1, j+1);
 				i--;
 				j++;
 			}
@@ -96,7 +96,7 @@ public class MutantDetector {
 			int j = column;
 			
 			while(keepChecking() && j < dna.length - 1) {
-				readPosition(i, j, getCharAt(i - 1, j + 1));
+				readPosition(i, j, i-1, j+1);
 				i--; 
 				j++;
 			}
@@ -117,7 +117,7 @@ public class MutantDetector {
 			int j = 0;
 
 			while(keepChecking() && i < dna.length - 1) {
-				readPosition(i, j, getCharAt(i + 1, j + 1));
+				readPosition(i, j, i+1, j+1);
 				i++;
 				j++;
 			}
@@ -133,7 +133,7 @@ public class MutantDetector {
 			int i = 0; int j = column;
 			
 			while(keepChecking() && j < dna.length - 1) {
-				readPosition(i, j, getCharAt(i + 1, j + 1));
+				readPosition(i, j, i+1, j+1);
 				i++; 
 				j++;
 			}
@@ -143,9 +143,10 @@ public class MutantDetector {
 		}
 	}
 
-	private void readPosition(int i, int j, char nextChar) {
+	private void readPosition(int i, int j, int nextI, int nextJ) {
 
 		char currentChar = getCharAt(i, j);
+		char nextChar = getCharAt(nextI, nextJ);
 
 		if (currentChar == nextChar) {
 			consecutive++;

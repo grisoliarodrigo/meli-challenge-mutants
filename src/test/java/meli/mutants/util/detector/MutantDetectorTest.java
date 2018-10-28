@@ -21,7 +21,7 @@ public class MutantDetectorTest {
 
 	@Test
 	public void test_is_mutant_one_horizontal_and_one_vertical_sequence() {
-		String[] dna = { "AAAAGA", "CCGTGC", "TTATGT", "AGAAGG", "GCCCTA", "TCACTG" };
+		String[] dna = { "ATATAT", "GCGCGT", "ATATAT", "ACGCGT", "ATATAT", "ACGCGC" };
 		Assert.assertTrue(new MutantDetector(dna).isMutant());
 	}
 
@@ -136,5 +136,5 @@ public class MutantDetectorTest {
 		String[] dna = { "GCGCGC", "ATAGAT", "GAGCGC", "ATATAG", "GCGAGC", "ATATAT" };
 		Assert.assertTrue(new MutantDetector(dna).isMutant());
 	}
-	
+
 }
