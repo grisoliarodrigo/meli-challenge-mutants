@@ -38,7 +38,7 @@ Recibe como parámetro una secuencia de ADN, representada por un array de string
 
 ### Servicio Stats:
 
-Devuelve las estadísticas de las secuencias de ADN que han sido consultadas. 
+Devuelve estadísticas en base a las secuencias de ADN que han sido consultadas. 
 
 - **URL:** http://mutants.us-west-2.elasticbeanstalk.com/stats
 
