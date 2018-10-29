@@ -37,8 +37,9 @@ public class MutantDetector {
 		for (int i = 0; i < dna.length; i++) {
 
 			validateRow(i);
+			validateCharAt(i,0);
 			consecutive = 0;
-
+			
 			for (int j = 0; j < dna.length - 1; j++) {
 				validateCharAt(i, j + 1);
 				readPosition(i, j, i, j + 1);
