@@ -53,3 +53,4 @@ Devuelve estadísticas en base a las secuencias de ADN que han sido consultadas.
     "ratio": [number]
   }
   ```
+_________________________________________________
