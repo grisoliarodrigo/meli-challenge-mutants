@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,11 +26,7 @@ public class MutantController {
 	@RequestMapping(value = "/mutant", method = RequestMethod.POST)
 	public ResponseEntity<?> isMutant(@RequestBody Human human) {
 
-		try {
-			humanService.save(human);
-		} catch (InvalidDNAException e) {
-			return getBadRequestMessage(e.getMessage());
-		}
+		humanService.save(human);
 
 		if (human.isMutant()) {
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -46,19 +43,18 @@ public class MutantController {
 
 	@RequestMapping(value = "/")
 	public Map<String, String> APIstatus() {
-
 		Map<String, String> response = new HashMap<String, String>();
-
 		response.put("status", "OK");
 		response.put("version", "0.0.3");
-
 		return response;
 	}
 
-	private ResponseEntity<?> getBadRequestMessage(String message) {
+	@ExceptionHandler({ InvalidDNAException.class })
+	public ResponseEntity<?> handleInvalidDNAException(InvalidDNAException e) {
 		Map<String, String> response = new HashMap<String, String>();
-		response.put("message", message);
+		response.put("message", e.getMessage());
 		response.put("status", HttpStatus.BAD_REQUEST.toString());
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+	
 }
