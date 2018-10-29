@@ -41,14 +41,6 @@ public class MutantController {
 		return humanService.getStats();
 	}
 
-	@RequestMapping(value = "/")
-	public Map<String, String> APIstatus() {
-		Map<String, String> response = new HashMap<String, String>();
-		response.put("status", "OK");
-		response.put("version", "0.0.3");
-		return response;
-	}
-
 	@ExceptionHandler({ InvalidDNAException.class })
 	public ResponseEntity<?> handleInvalidDNAException(InvalidDNAException e) {
 		Map<String, String> response = new HashMap<String, String>();
