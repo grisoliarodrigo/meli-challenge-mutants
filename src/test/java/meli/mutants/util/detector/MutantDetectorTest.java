@@ -18,9 +18,16 @@ public class MutantDetectorTest {
 		String[] dna = { "GGGGCC", "AAATAT", "GCGCGC", "ATATAT", "GCGCGC", "ATATAT" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
+	
+	
+	@Test
+	public void test_is_not_mutant_with_two_sequences_of_trhee() {
+		String[] dna = { "TAAATT", "GAGCCC", "TTATGT", "AGAAGG", "TCACTG", "TCACTG" };
+		Assert.assertFalse(new MutantDetector(dna).isMutant());
+	}
 
 	@Test
-	public void test_is_mutant_one_horizontal_and_one_vertical_sequence() {
+	public void test_is_mutant_with_one_horizontal_and_one_vertical_sequence() {
 		String[] dna = { "ATATAT", "GCGCGT", "ATATAT", "ACGCGT", "ATATAT", "ACGCGC" };
 		Assert.assertTrue(new MutantDetector(dna).isMutant());
 	}
@@ -32,7 +39,7 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_not_mutant_with_one_diagonal() {
+	public void test_is_not_mutant_with_only_one_diagonal() {
 		String[] dna = { "ATGGGA", "CATTGC", "TTATTT", "TGAAGG", "GCGTCA", "TCACTG" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
@@ -44,25 +51,25 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_not_mutant_with_one_horizontal_five_letter_sequence() {
+	public void test_is_not_mutant_with_only_one_horizontal_five_letter_sequence() {
 		String[] dna = { "ATATAT", "GGGGGC", "ATATAT", "GCGCGC", "ATATAT", "GCGCGC" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
 
 	@Test
-	public void test_is_not_mutant_with_one_vertical_five_letter_sequence() {
+	public void test_is_not_mutant_with_only_one_vertical_five_letter_sequence() {
 		String[] dna = { "ATATAT", "ACGCGC", "ATATAT", "ACGCGC", "ATATAT", "GCGCGC" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
 
 	@Test
-	public void test_is_not_mutant_with_one_foward_diagonal_five_letter_sequence() {
+	public void test_is_not_mutant_with_only_one_foward_diagonal_five_letter_sequence() {
 		String[] dna = { "ATATAT", "GAGCGC", "ATATAT", "GCGAGC", "ATATAT", "GCGCGC" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
 
 	@Test
-	public void test_is_not_mutant_with_one_backward_diagonal_five_letter_sequence() {
+	public void test_is_not_mutant_with_only_one_backward_diagonal_five_letter_sequence() {
 		String[] dna = { "ATATAT", "GCGCTC", "ATATAT", "GCTCGC", "ATATAT", "GCGCGC" };
 		Assert.assertFalse(new MutantDetector(dna).isMutant());
 	}
@@ -94,7 +101,7 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_not_mutant_with_nine_row_table() {
+	public void test_is_not_mutant_with_no_sequences_in_nine_row_table() {
 		String[] dna = { "ATATATATA", "CGCGCGCGC", "ATATATATA", "CGCGCGCGC", "ATATATATA", "CGCGCGCGC", "ATATATATA",
 				"CGCGCGCGC", "ATATATATA" };
 
@@ -102,7 +109,7 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_mutant_with_two_consecutive_horizontal() {
+	public void test_is_mutant_with_two_consecutive_horizontal_sequences() {
 		String[] dna = { "ATATATATA", "CGGGGGGGG", "ATATATATA", "CGCGCGCGC", "ATATATATA", "CGCGCGCGC", "ATATATATA",
 				"CGCGCGCGC", "ATATATATA" };
 
@@ -110,7 +117,7 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_mutant_with_two_consecutive_vertical() {
+	public void test_is_mutant_with_two_consecutive_vertical_sequences() {
 		String[] dna = { "ATATATATA", "CGCGCGCGC", "ATATATAGA", "CGCGCGCGC", "ATATATAGA", "CGCGCGCGC", "ATATATAGA",
 				"CGCGCGCGC", "ATATATAGA" };
 
@@ -118,7 +125,7 @@ public class MutantDetectorTest {
 	}
 
 	@Test
-	public void test_is_mutant_with_two_consecutive_diagonals() {
+	public void test_is_mutant_with_two_consecutive_diagonal__sequences() {
 		String[] dna = { "ATATATATA", "CGCGCGCAC", "ATATATATA", "CGCGCACGC", "ATATATATA", "CGCACGCGT", "ATATATATA",
 				"CACGCGTGC", "ATATATATA" };
 
